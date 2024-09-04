@@ -1,8 +1,9 @@
-﻿using PetLand.Areas.Admin.Models;
+using PetLand.Areas.Admin.Models;
 using System.Collections.Generic;
 using System.Linq;
 using System.Web.Mvc;
 using System.Data.Entity;
+using System;
 
 namespace PetLand.Areas.Admin.Controllers
 {
@@ -43,11 +44,14 @@ namespace PetLand.Areas.Admin.Controllers
 
         [HttpPost]
         public ActionResult AddCart(int idSanPham, int idKhachHang, int soluong)
-        {
+        {         
             using (PetLandEntities db = new PetLandEntities())
             {
                 // Kiểm tra xem sản phẩm đã có trong giỏ hàng chưa
                 var existingItem = db.Giohangs.FirstOrDefault(item => item.idsanpham == idSanPham && item.idkhachhang == idKhachHang);
+                var cartItems = db.Giohangs
+                          .Where(g => g.idkhachhang == idKhachHang)
+                          .ToList();
 
                 if (existingItem != null)
                 {
@@ -104,9 +108,18 @@ namespace PetLand.Areas.Admin.Controllers
         }
         public ActionResult cart()
         {
-            PetLandEntities db = new PetLandEntities();
-            List<Giohang> giohangs = db.Giohangs.ToList();
-            return View(giohangs);
+            var khachhang = Session["KhachHang"] as KhachHang;
+            int idKhachHang = khachhang.idKhachHang;
+            using (var db = new PetLandEntities())
+            {
+                // Lọc sản phẩm theo ID khách hàng
+                var cartItems = db.Giohangs
+                                  .Where(g => g.idkhachhang == idKhachHang)
+                                  .Include(g => g.SanPham) // Include để tải dữ liệu sản phẩm
+                                  .ToList();
+                // Truyền danh sách sản phẩm đến view
+                return View(cartItems);
+            }
         }
         public ActionResult cart_delete(int id)
         {
@@ -115,6 +128,16 @@ namespace PetLand.Areas.Admin.Controllers
                 db.Giohangs.Remove(updateModel);
                 db.SaveChanges();
                 return RedirectToAction("cart");
+        }
+
+        public ActionResult cart_deleteall()
+        {
+
+            PetLandEntities db = new PetLandEntities();
+            var allItems = db.Giohangs.ToList();
+            db.Giohangs.RemoveRange(allItems);
+            db.SaveChanges();
+            return RedirectToAction("cart");
         }
     }
 }
