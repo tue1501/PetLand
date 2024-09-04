@@ -1,0 +1,36 @@
+﻿@using PetLand.Areas.Admin.Models
+
+@{
+    ViewBag.Title = "info";
+    Layout = "~/Views/Shared/_Trangchu.cshtml";
+}
+@{ var khachhang = Session["KhachHang"] as KhachHang; }
+<head>
+    <link rel="stylesheet" href="~/assets/css/information.css">
+</head>
+<div class="container">
+    <div class="c-logo">
+        <img src="~/assets/img/Logo.png" alt="Logo">
+        <ul class="category__list">
+            <a href="account-info.html">
+            <li class="category__item"><i class="fa-solid fa-user"></i>Thông tin tài khoản</li></a>
+            <a href="account-discount.html">
+            <li class="category__item"><i class="fa-solid fa-ticket"></i>Mã giảm giá</li></a>
+            <a href="@Url.Action("Logout", "Account")" id="logout-link">
+            <li class="category__item"><i class="fa-solid fa-right-from-bracket"></i>Thoát tài khoản</li></a>
+        </ul>
+    </div>
+    <div class="information">
+        <div class="c-info">
+            <p>Họ và tên: @khachhang.hoten </p>
+            <p>Số điện thoại: @khachhang.sdt</p>
+            <p>Email: @khachhang.gmail</p>
+            <p>Địa chỉ: @khachhang.diachi <a href="account-address.html"><i class="fas fa-edit"></i></a></p>
+        </div>
+        <div class="btn">
+            <button class="change" type="button" onclick="window.location.href='account-change_password.html'">Đổi mật khẩu</button>
+            <button class="del" type="button" onclick="">Xóa tài khoản</button>
+        </div>
+    </div>
+</div>
+

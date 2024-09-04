@@ -1,0 +1,56 @@
+﻿@model IEnumerable<PetLand.Areas.Admin.Models.Giohang>
+@{
+    ViewBag.Title = "cart";
+    Layout = "~/Views/Shared/_Trangchu.cshtml";
+
+}
+<head>
+    <link rel="stylesheet" href="~/assets/css/cart.css">
+</head>
+<div class="container">
+    <h1 class="cart-name">Giỏ Hàng</h1>
+
+    <div id="empty-cart-message" style="display: none;">
+        <p>Giỏ hàng của bạn hiện đang trống.</p>
+    </div>
+    @foreach (var item in Model)
+    {
+        <!-- Cart Item 1 -->
+<div class="cart-item">
+    <input type="checkbox" class="select-item" id="item1" name="select-item">
+    <img src="~/assets/img/product.jpg" alt="">
+        <div class="item-details">
+        <span class="item-name">@Html.DisplayFor(modelItem => item.SanPham.tensp)</span>
+        <div class="item-prices">
+            <span class="price">@Html.DisplayFor(modelItem => item.SanPham.gia)</span>
+        </div>
+        </div>
+     <div class="quantity-control">
+        <button class="quantity-button decrease">-</button>
+        <span class="quantity">@Html.DisplayFor(modelItem => item.sl)</span>
+        <button class="quantity-button increase">+</button>
+    </div>
+        <div class="quantity-control">
+            <a class="link-product" href="@Url.Action("cart_delete", new { id = item.idgiohanghang })">
+                <button class="delete-button"><i class="fa-regular fa-trash-can"></i></button>
+            </a>
+</div>
+</div>
+    }
+
+    <!-- Add more cart items as needed -->
+
+    <div class="cart-footer">
+        <div class="cart-footer__actions">
+            <input type="checkbox" id="select-all-footer" name="select">
+            <label for="select-all-footer">Chọn Tất Cả</label>
+            <button class="cart-footer__delete">Xóa</button>
+        </div>
+        <div class="cart-footer__summary">
+            <span class="cart-footer__total-text">Tổng thanh toán:</span>
+            <span class="cart-footer__total-price">0đ</span>
+            <button class="cart-footer__checkout-button">Mua Hàng</button>
+        </div>
+    </div>
+</div>
+
