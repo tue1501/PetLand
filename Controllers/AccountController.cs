@@ -1,4 +1,4 @@
-﻿using PetLand.Areas.Admin.Models;
+using PetLand.Areas.Admin.Models;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -49,13 +49,20 @@ namespace PetLand.Controllers
         }
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public ActionResult Register(string sdt, string matkhau, string hoten, string gmail,string confirmPassword)
+        public ActionResult Register(string sdt, string matkhau, string hoten, string gmail, string confirmPassword)
         {
             using (PetLandEntities db = new PetLandEntities())
             {
                 // Kiểm tra xem số điện thoại đã tồn tại chưa
                 var khachhangs = db.KhachHangs.FirstOrDefault(kh => kh.sdt == sdt);
-                if (khachhangs == null)
+                if (khachhangs != null)
+                {
+                    // Nếu số điện thoại đã tồn tại, hiển thị thông báo lỗi
+                    ViewBag.ErrorMessage2 = "Số điện thoại đã tồn tại. Vui lòng thử lại.";
+                    return View(); // Trả lại View cùng với model để giữ nguyên thông tin đã nhập
+
+                }
+                else
                 {
                     if (matkhau != confirmPassword)
                     {
@@ -76,15 +83,8 @@ namespace PetLand.Controllers
                         return RedirectToAction("Login"); // Chuyển hướng sau khi thêm thành công
                     }
                 }
-                else
-                {
-                    // Nếu số điện thoại đã tồn tại, hiển thị thông báo lỗi
-                    ViewBag.ErrorMessage2 = "Số điện thoại đã tồn tại. Vui lòng thử lại.";
-                    return View(); // Trả lại View cùng với model để giữ nguyên thông tin đã nhập
-                }
             }
         }
-
         public ActionResult Info()
         {
             return View();
@@ -95,6 +95,22 @@ namespace PetLand.Controllers
             FormsAuthentication.SignOut();
             return View("Login");
         }
-
+        public ActionResult Address()
+        {
+            return View();
+        }
+        public ActionResult add()
+        {
+            return View();
+        }
+        [HttpPost]  
+        public ActionResult Address_add(int id,string diachi)
+        {
+            PetLandEntities db = new PetLandEntities();
+            KhachHang model12 = db.KhachHangs.Find(id);
+            model12.diachi = diachi;
+            db.SaveChanges();
+            return RedirectToAction("Info");
+        }
     }
 }
