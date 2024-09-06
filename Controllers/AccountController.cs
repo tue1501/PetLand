@@ -104,10 +104,10 @@ namespace PetLand.Controllers
             return View();
         }
         [HttpPost]  
-        public ActionResult Address_add(int id,string diachi)
+        public ActionResult Address_add(int idKhachHang, string diachi)
         {
             PetLandEntities db = new PetLandEntities();
-            KhachHang model12 = db.KhachHangs.Find(id);
+            KhachHang model12 = db.KhachHangs.Find(idKhachHang);
             model12.diachi = diachi;
             db.SaveChanges();
             return RedirectToAction("Info");
