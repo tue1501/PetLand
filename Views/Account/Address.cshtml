@@ -1,28 +1,32 @@
-﻿@using PetLand.Areas.Admin.Models
+@using PetLand.Areas.Admin.Models
 @{
     ViewBag.Title = "Address";
     Layout = "~/Views/Shared/_Trangchu.cshtml";
 }
+@{ var khachhang = Session["KhachHang"] as KhachHang;
+    var customerId = khachhang?.idKhachHang; }
 <head>
     <link rel="stylesheet" href="~/assets/css/information.css">
 </head>
-@{ var khachhang = Session["KhachHang"] as KhachHang;
-    var customerId = khachhang?.idKhachHang; }
 <div class="container container-info">
     <div class="c-logo">
-        <img src="~/assets/img/Logo.png" alt="Logo">
+        <img src="assets\img\Logo.png" alt="Logo">
         <ul class="category__list">
+            <a href="index.html">
+            <li class="category__item hide-item"><i class="fa-solid fa-house"></i>Trang chủ</li></a>
             <a href="account-info.html">
             <li class="category__item"><i class="fa-solid fa-user"></i>Thông tin tài khoản</li></a>
             <a href="account-discount.html">
             <li class="category__item"><i class="fa-solid fa-ticket"></i>Mã giảm giá</li></a>
+            <a href="order.html">
+            <li class="category__item hide-item"><i class="fa-solid fa-truck"></i>Đơn hàng của bạn</li></a>
             <a href="account-login.html" id="logout-link">
             <li class="category__item"><i class="fa-solid fa-right-from-bracket"></i>Thoát tài khoản</li></a>
         </ul>
     </div>
     <div class="information if-address">
-        <h2>Thêm Địa Chỉ</h2>
-        <form id="address-form" @*action="@Url.Action("Address","Account")"*@action="@Url.Action("SaveAddress", "Account")" method="post">
+        <h1>Thêm Địa Chỉ</h1>
+        <form id="address-form" action="@Url.Action("Address_add","Account")" method="post" >
             <div class="form-group">
                 <label for="province">Tỉnh/Thành phố:</label>
                 <select id="province" name="province" required>
@@ -46,16 +50,10 @@
                 <input type="text" id="street" name="street" placeholder="Nhập số nhà, tên đường" required>
             </div>
             <div id="address-display">
-                @*<input type="hidden" name="idKhachHang" value="@customerId" />*@
-                <h2 id="text-full" style="display: none;">Địa Chỉ Đã Nhập:</h2>
-                <p id="full-address" name="diachi"></p>
-                <textarea id="full-address"></textarea>
-                @*<p id="full-address" name="diachi"></p>*@
+                <input type="hidden" name="idKhachHang" value="@customerId" />
+                <textarea id="full-address" name="diachi" rows="4" readonly style="display: none;"></textarea>
             </div>
-            <div id="success-message" style="color: green; font-weight: bold;"></div>
-            <button type="submit">Thêm Địa Chỉ</button>
-            <button class="cf-address" type="submit" id="confirm-address" style="display: none;" onclick="window.location.href='@Url.Action("add", "Account")'"> Xác Nhận </button>
+            <button id="add-address" type="submit"> Thêm Địa Chỉ</button>
         </form>
     </div>
 </div>
-
