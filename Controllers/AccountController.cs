@@ -48,7 +48,7 @@ namespace PetLand.Controllers
             return View();
         }
         [HttpPost]
-        [ValidateAntiForgeryToken]
+        //[ValidateAntiForgeryToken]
         public ActionResult Register(string sdt, string matkhau, string hoten, string gmail, string confirmPassword)
         {
             using (PetLandEntities db = new PetLandEntities())
@@ -95,20 +95,22 @@ namespace PetLand.Controllers
             FormsAuthentication.SignOut();
             return View("Login");
         }
-        public ActionResult Address()
+        public ActionResult Address(int id)
         {
-            return View();
+            PetLandEntities db = new PetLandEntities();
+            KhachHang model12 = db.KhachHangs.Find(id);
+            return View(model12);
         }
         public ActionResult add()
         {
             return View();
         }
-        [HttpPost]  
-        public ActionResult Address_add(int idKhachHang, string diachi)
+        [HttpPost]
+        public ActionResult Address(KhachHang model)
         {
             PetLandEntities db = new PetLandEntities();
-            KhachHang model12 = db.KhachHangs.Find(idKhachHang);
-            model12.diachi = diachi;
+            var updateModel = db.KhachHangs.Find(model.idKhachHang);
+            updateModel.diachi = model.diachi;
             db.SaveChanges();
             return RedirectToAction("Info");
         }
