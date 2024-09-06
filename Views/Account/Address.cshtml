@@ -1,16 +1,15 @@
-@using PetLand.Areas.Admin.Models
+@model PetLand.Areas.Admin.Models.KhachHang
+
 @{
     ViewBag.Title = "Address";
     Layout = "~/Views/Shared/_Trangchu.cshtml";
 }
-@{ var khachhang = Session["KhachHang"] as KhachHang;
-    var customerId = khachhang?.idKhachHang; }
 <head>
     <link rel="stylesheet" href="~/assets/css/information.css">
 </head>
 <div class="container container-info">
     <div class="c-logo">
-        <img src="assets\img\Logo.png" alt="Logo">
+        <img src="~/assets/img/Logo.png" alt="Logo">
         <ul class="category__list">
             <a href="index.html">
             <li class="category__item hide-item"><i class="fa-solid fa-house"></i>Trang chủ</li></a>
@@ -26,7 +25,7 @@
     </div>
     <div class="information if-address">
         <h1>Thêm Địa Chỉ</h1>
-        <form id="address-form" action="@Url.Action("Address_add","Account")" method="post" >
+        <form id="address-form" action="@Url.Action("Address","Account")" method="post">
             <div class="form-group">
                 <label for="province">Tỉnh/Thành phố:</label>
                 <select id="province" name="province" required>
@@ -50,8 +49,10 @@
                 <input type="text" id="street" name="street" placeholder="Nhập số nhà, tên đường" required>
             </div>
             <div id="address-display">
-                <input type="hidden" name="idKhachHang" value="@customerId" />
-                <textarea id="full-address" name="diachi" rows="4" readonly style="display: none;"></textarea>
+                @Html.ValidationSummary(true, "", new { @class = "text-danger" })
+                @Html.HiddenFor(model => model.idKhachHang)
+                @Html.EditorFor(model => model.diachi, new { htmlAttributes = new { @class = "form-control", @id = "diachi" } })
+                @*<input id="diachi" name="diachi" rows="4" readonly style="display: none;>*@
             </div>
             <button id="add-address" type="submit"> Thêm Địa Chỉ</button>
         </form>
