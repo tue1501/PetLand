@@ -3,7 +3,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Web.Mvc;
 using System.Data.Entity;
-using System;
+using PetLand.Models;
 
 namespace PetLand.Areas.Admin.Controllers
 {
@@ -44,14 +44,11 @@ namespace PetLand.Areas.Admin.Controllers
 
         [HttpPost]
         public ActionResult AddCart(int idSanPham, int idKhachHang, int soluong)
-        {         
+        {
             using (PetLandEntities db = new PetLandEntities())
             {
                 // Kiểm tra xem sản phẩm đã có trong giỏ hàng chưa
                 var existingItem = db.Giohangs.FirstOrDefault(item => item.idsanpham == idSanPham && item.idkhachhang == idKhachHang);
-                var cartItems = db.Giohangs
-                          .Where(g => g.idkhachhang == idKhachHang)
-                          .ToList();
 
                 if (existingItem != null)
                 {
@@ -106,38 +103,90 @@ namespace PetLand.Areas.Admin.Controllers
                                  .ToList();
             return View(dssanpham);
         }
-        public ActionResult cart()
+        public ActionResult Cart(int id)
         {
-            var khachhang = Session["KhachHang"] as KhachHang;
-            int idKhachHang = khachhang.idKhachHang;
-            using (var db = new PetLandEntities())
+            using (PetLandEntities db = new PetLandEntities())
             {
-                // Lọc sản phẩm theo ID khách hàng
-                var cartItems = db.Giohangs
-                                  .Where(g => g.idkhachhang == idKhachHang)
-                                  .Include(g => g.SanPham) // Include để tải dữ liệu sản phẩm
-                                  .ToList();
-                // Truyền danh sách sản phẩm đến view
+                // Sử dụng LINQ để truy vấn dữ liệu
+                var cartItems = (from kh in db.KhachHangs
+                                 join gh in db.Giohangs on kh.idKhachHang equals gh.idkhachhang
+                                 join sp in db.SanPhams on gh.idsanpham equals sp.idSanPham
+                                 where kh.idKhachHang == id
+                                 select new CartItemViewModel
+                                 {
+                                     KhachHangid = kh.idKhachHang,
+                                     Giohangid = gh.idgiohanghang,
+                                     SanPhamId = sp.idSanPham,
+                                     TenSanPham = sp.tensp,
+                                     Gia = (decimal)sp.gia,
+                                     SoLuong = (int)gh.sl,
+                                     TongGia = (decimal)(gh.sl * sp.gia)
+                                 }).ToList();
                 return View(cartItems);
             }
         }
         public ActionResult cart_delete(int id)
         {
-                PetLandEntities db = new PetLandEntities();
-                var updateModel = db.Giohangs.Find(id);
-                db.Giohangs.Remove(updateModel);
-                db.SaveChanges();
+            using (PetLandEntities db = new PetLandEntities())
+            {
+                // Tìm sản phẩm trong giỏ hàng theo id
+                var giohangItem = db.Giohangs.FirstOrDefault(g => g.idgiohanghang == id);
+
+                if (giohangItem != null)
+                {
+                    int? idKhachHang = giohangItem.idkhachhang; 
+                    // Xóa sản phẩm khỏi giỏ hàng
+                    db.Giohangs.Remove(giohangItem);
+                    db.SaveChanges();
+
+                    // Điều hướng về trang khách hàng sử dụng idKhachHang
+                    return RedirectToAction("cart", new { id = idKhachHang });
+                }
+                // Nếu không tìm thấy giỏ hàng, điều hướng trở lại trang giỏ hàng
                 return RedirectToAction("cart");
+            }
         }
-
-        public ActionResult cart_deleteall()
+        [HttpPost]
+        public ActionResult Cart_bot(int idsp, int change,int idkhachhang) 
         {
+            using (PetLandEntities db = new PetLandEntities())
+            {
+                var product = db.Giohangs.FirstOrDefault(x => x.idsanpham == idsp && x.idkhachhang == idkhachhang);
+                int? idKhachHang = product.idkhachhang;
+                if (product != null)
+                {
+                    product.sl += change;
 
-            PetLandEntities db = new PetLandEntities();
-            var allItems = db.Giohangs.ToList();
-            db.Giohangs.RemoveRange(allItems);
-            db.SaveChanges();
-            return RedirectToAction("cart");
+                    if (product.sl < 1)
+                    {
+                        product.sl = 1; // Đảm bảo số lượng không nhỏ hơn 1
+                    }
+                    db.SaveChanges();
+                }
+                // Quay về trang hiện tại hoặc chuyển hướng đến trang khác nếu cần
+                return RedirectToAction("cart", new { id = idKhachHang });
+            }
+        }
+        [HttpPost]
+        public ActionResult Cart_them(int idsp, int change, int idkhachhang)
+        {
+            using (PetLandEntities db = new PetLandEntities())
+            {
+                var product = db.Giohangs.FirstOrDefault(x => x.idsanpham == idsp && x.idkhachhang == idkhachhang);
+                int? idKhachHang = product.idkhachhang;
+                if (product != null)
+                {
+                    product.sl -= change;
+
+                    if (product.sl < 1)
+                    {
+                        product.sl = 1; // Đảm bảo số lượng không nhỏ hơn 1
+                    }
+                    db.SaveChanges();
+                }
+                // Quay về trang hiện tại hoặc chuyển hướng đến trang khác nếu cần
+                return RedirectToAction("cart", new { id = idKhachHang });
+            }
         }
     }
 }
