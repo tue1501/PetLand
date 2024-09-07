@@ -1,0 +1,44 @@
+﻿@model PetLand.Areas.Admin.Models.SanPham
+@using PetLand.Areas.Admin.Models
+@{
+    ViewBag.Title = "detail";
+    Layout = "~/Views/Shared/_Trangchu.cshtml";
+}
+@{ var khachhang = Session["KhachHang"] as KhachHang;
+    var customerId = khachhang?.idKhachHang; }
+<head>
+    <link rel="stylesheet" href="~/assets/css/base.css">
+    <link rel="stylesheet" href="~/assets/css/main.css">
+    <link rel="stylesheet" href="~/assets/css/product-detail.css">
+</head>
+<div class="container">
+    <div class="product-detail__container">
+
+        <div class="product-detail__image">
+            <img src="~/assets/img/product.jpg" alt="Product Image">
+        </div>
+        <div class="product-detail__info">
+            <h1 class="product-detail__name">@Html.DisplayFor(model => model.tensp)</h1>
+            <p class="product-detail__price">@Html.DisplayFor(model => model.gia)</p>
+            <div class="rating">
+                <div class="product-detail__rating" data-rating="@Model.Danhgias.Average(d => d.diem)">
+                </div>
+                <span>(@Html.DisplayFor(model => model.Danhgias.Count) Đánh giá)</span>
+            </div>
+            <p class="product-detail__origin">
+                Xuất xứ : @Html.DisplayFor(model => model.xuatxu)
+            </p>
+            <p class="product-detail__description">
+                @Html.DisplayFor(model => model.mota)
+            </p>
+            @using (Html.BeginForm("AddCart", "Trangchinh", FormMethod.Post))
+            {
+                @Html.HiddenFor(model => model.idSanPham)
+                <input type="hidden" name="idKhachHang" value="@customerId" />
+                <input type="hidden" name="soluong" value="1" min="1" />
+                <button class="product-detail__btn-add">Thêm vào giỏ hàng</button>
+            }
+        </div>
+    </div>
+    @{Html.RenderAction("detail_danhgia", "Trangchinh");}
+</div>
