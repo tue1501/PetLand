@@ -51,10 +51,11 @@
             <div id="address-display">
                 @Html.ValidationSummary(true, "", new { @class = "text-danger" })
                 @Html.HiddenFor(model => model.idKhachHang)
-                @Html.EditorFor(model => model.diachi, new { htmlAttributes = new { @class = "form-control", @id = "diachi" } })
-                @*<input id="diachi" name="diachi" rows="4" readonly style="display: none;>*@
+                @Html.HiddenFor(model => model.diachi, new { htmlAttributes = new { @class = "form-control", @id = "diachi" } })
             </div>
             <button id="add-address" type="submit"> Thêm Địa Chỉ</button>
         </form>
     </div>
 </div>
+<script src="~/assets/js/address.js"></script>
+<script src="~/assets/js/information.js"></script>
