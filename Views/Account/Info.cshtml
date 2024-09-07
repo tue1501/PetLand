@@ -1,34 +1,34 @@
+@model PetLand.Areas.Admin.Models.KhachHang
 
 @{
-    ViewBag.Title = "dangnhap";
-    Layout = "~/Views/Shared/_Chuadangnhap.cshtml";
+    ViewBag.Title = "info";
+    Layout = "~/Views/Shared/_Trangchu.cshtml";
 }
-
 <head>
-    <link rel="stylesheet" href="~/assets/css/account.css">
+    <link rel="stylesheet" href="~/assets/css/information.css">
 </head>
-
 <div class="container">
-    <div class="container__login">
-        <h2>Đăng nhập</h2>
-        <form id="loginForm" action="@Url.Action("Login", "Account")" method="post">
-            @Html.AntiForgeryToken()
-            <input class="input login-input" type="text" id="sdt" name="sdt" required placeholder="Số điện thoại">
-            <span class="error-message" id="usernameError">@ViewBag.ErrorMessage</span>
-            <input class="input login-input" type="password" id="matkhau" name="matkhau" required placeholder="Mật khẩu">
-            <span class="error-message" id="passwordError">@ViewBag.ErrorMessage1</span>
-            <div class="re-fr">
-                <div class="reme">
-                    <input class="login-checkbox" type="checkbox" name="remember" id="remember">
-                    <label class="login-reme" for="remember">Ghi nhớ tôi?</label>
-                </div>
-                <a class="a-login" href="account-forgot_password.html">Quên mật khẩu?</a>
-            </div>
-            <button type="submit">Đăng Nhập Ngay</button>
-            <button class="register" type="button" onclick="window.location.href='@Url.Action("Register","Account" )'">Tạo tài khoản mới</button>
-        </form>
-        <div class="service">
-            <a href="">Điều khoản dịch vụ</a> và <a href="">Chính sách bảo mật</a>
+    <div class="c-logo">
+        <img src="~/assets/img/Logo.png" alt="Logo">
+        <ul class="category__list">
+            <a href="@Url.Action("Info", "Account", new { id = Model.idKhachHang })">
+            <li class="category__item"><i class="fa-solid fa-user"></i>Thông tin tài khoản</li></a>
+            <a href="@Url.Action("Discount", "Account", new { id = Model.idKhachHang })">
+            <li class="category__item"><i class="fa-solid fa-ticket"></i>Mã giảm giá</li></a>
+            <a href="@Url.Action("Logout", "Account")" id="logout-link">
+            <li class="category__item"><i class="fa-solid fa-right-from-bracket"></i>Thoát tài khoản</li></a>
+        </ul>
+    </div>
+    <div class="information">
+        <div class="c-info">
+            <p>Họ và tên: @Html.DisplayFor(model => model.hoten) </p>
+            <p>Số điện thoại: @Html.DisplayFor(model => model.sdt)</p>
+            <p>Email: @Html.DisplayFor(model => model.gmail)</p>
+            <p>Địa chỉ: @Html.DisplayFor(model => model.diachi) <a href=@Url.Action("Address","Account", new { id = Model.idKhachHang })><i class="fas fa-edit"></i></a></p>
+        </div>
+        <div class="btn">
+            <button class="change" type="button" onclick="window.location.href='@Url.Action("Changepass","Account" ,new { id = Model.idKhachHang } )'">Đổi mật khẩu</button>
+            <button class="del" type="button" onclick="window.location.href='@Url.Action("DeleteAccount","Account" ,new { id = Model.idKhachHang } )'">Xóa tài khoản</button>
         </div>
     </div>
 </div>
