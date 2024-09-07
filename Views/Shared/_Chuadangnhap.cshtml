@@ -1,0 +1,84 @@
+﻿@using PetLand.Areas.Admin.Models
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/normalize/8.0.1/normalize.min.css">
+    <link rel="stylesheet" href="~/assets/css/base.css">
+    <link rel="stylesheet" href="~/assets/css/main.css">
+    <link rel="stylesheet" href="~/assets/fonts/fontawesome-free-6.6.0/css/all.min.css">
+    <link href="https://fonts.googleapis.com/css2?family=Roboto:wght@300;400;500;700&display=swap" rel="stylesheet">
+</head>
+<body>
+    <div class="app">
+        <header class="header">
+            <div class="grid">
+                <nav class="header__navbar">
+                    <ul class="header__navbar-list">
+                        <li class="header__navbar-item">
+                            <a href="@Url.Action("Index", "Trangchinh")" class="header__navbar-item-link"><img src="~/assets/img/LogoWithName.png" alt=""></a>
+                        </li>
+                    </ul>
+                    <ul class="header__navbar-list">
+                        <li class="header__navbar-item">
+                            <a href="@Url.Action("Index", "Trangchinh")" class="header__navbar-item-link">
+                                <i class="fa-solid fa-house"></i>
+                                Trang chủ
+                            </a>
+                        </li>
+                        <li class="header__navbar-item">
+                            <a href="#" id="contactButton" class="header__navbar-item-link">
+                                <i class="fa-solid fa-phone"></i>
+                                <span>
+                                    Liên hệ
+                                </span>
+                            </a>
+                        </li>
+                        <li class="header__navbar-item">
+                            <a href="order.html" class="header__navbar-item-link">
+                                <i class="fa-solid fa-truck"></i>
+                                Đơn hàng
+                            </a>
+                        </li>
+                        <li class="header__navbar-item">
+                            <a href="@Url.Action("Cart", "Trangchinh")" class="header__navbar-item-link">
+                                <i class="fa-solid fa-cart-shopping"></i>
+                                Giỏ hàng
+                            </a>
+                        </li>
+                        <li class="header__navbar-item">
+                            <a href="" class="header__navbar-item-link header__navbar-item-link-strong">
+                                <i class="fa-solid fa-user"></i>
+                                Tài khoản
+                            </a>
+                        </li>
+                    </ul>
+
+                </nav>
+            </div>
+        </header>
+        @RenderBody()
+        <footer class="footer">
+            <p>&copy; 2024 PETLAND. Bản quyền thuộc về PETLAND.</p>
+        </footer>
+        <div id="contactModal" class="modal">
+            <div class="modal-content">
+                <span class="close">&times;</span>
+                <div class="modal-info">
+                    <p><i class="fa-solid fa-phone"></i>0123-456-789</p>
+                    <a href="https://mail.google.com/mail/u/0/#inbox?compose=CllgCJlKGJQFkZmDGXpvdRqfnZdQJwrPCcCmWVzHNHrRQCQGNvKVtWJxvVvmJLMHxLZkGqphJdV"><i class="fa-solid fa-envelope"></i>petland2024@gmail.com</a>
+                    <p></p>
+                    <a href="https://www.facebook.com/nguyencongthuc384/"><i class="fa-brands fa-facebook"></i></i>facebook.com/petland2024</a>
+                </div>
+            </div>
+        </div>
+    </div>
+    <script src="~/assets/js/main1.js"></script>
+    <script src="~/assets/js/rating.js"></script>
+    <script src="~/assets/js/search.js"></script>
+</body>
+</html>
+
+
