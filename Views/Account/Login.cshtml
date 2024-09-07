@@ -1,12 +1,13 @@
-﻿
+
 @{
     ViewBag.Title = "dangnhap";
-    Layout = "~/Views/Shared/_Trangchu.cshtml";
+    Layout = "~/Views/Shared/_Chuadangnhap.cshtml";
 }
 
 <head>
     <link rel="stylesheet" href="~/assets/css/account.css">
 </head>
+
 <div class="container">
     <div class="container__login">
         <h2>Đăng nhập</h2>
@@ -24,11 +25,11 @@
                 <a class="a-login" href="account-forgot_password.html">Quên mật khẩu?</a>
             </div>
             <button type="submit">Đăng Nhập Ngay</button>
-            <button class="register" type="button" onclick="window.location.href='@Url.Action("Register", "Account")'">Tạo tài khoản mới</button>
+            <button class="register" type="button" onclick="window.location.href='@Url.Action("Register","Account" )'">Tạo tài khoản mới</button>
         </form>
         <div class="service">
             <a href="">Điều khoản dịch vụ</a> và <a href="">Chính sách bảo mật</a>
         </div>
     </div>
-
 </div>
+
