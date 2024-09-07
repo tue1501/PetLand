@@ -1,0 +1,48 @@
+@model IEnumerable<PetLand.Models.DiscountViewModel>
+
+@{
+    ViewBag.Title = "discount";
+    Layout = "~/Views/Shared/_Trangchu.cshtml";
+}
+<head>
+    <link rel="stylesheet" href="~/assets/css/information.css">
+</head>
+<div class="container container-info">
+    <div class="c-logo">
+        <img src="~/assets/img/Logo.png" alt="Logo">
+        <ul class="category__list">
+            <a href="index.html">
+            <li class="category__item hide-item"><i class="fa-solid fa-house"></i>Trang chủ</li></a>
+            <a href="account-info.html">
+            <li class="category__item"><i class="fa-solid fa-user"></i>Thông tin tài khoản</li></a>
+            <a href="account-discount.html">
+            <li class="category__item"><i class="fa-solid fa-ticket"></i>Mã giảm giá</li></a>
+            <a href="order.html">
+            <li class="category__item hide-item"><i class="fa-solid fa-truck"></i>Đơn hàng của bạn</li></a>
+            <a href="account-login.html" id="logout-link">
+            <li class="category__item"><i class="fa-solid fa-right-from-bracket"></i>Thoát tài khoản</li></a>
+        </ul>
+    </div>
+
+    <div class="information">
+        <div class="voucher-table" id="voucherTable">
+            <table>
+                <tr>
+                    <th>Mã</th>
+                    <th>Mô tả</th>
+                    <th>Ngày áp dụng</th>
+                    <th>Hạn hết hạn</th>
+                </tr>
+                @foreach (var item in Model)
+                {
+                    <tr>
+                        <td>@item.TenGiamGia</td>
+                        <td>@item.MoTa</td>
+                        <td>@item.NgayBatDau</td>
+                        <td>@item.NgayKetThuc</td>
+                    </tr>
+                }
+            </table>
+        </div>
+    </div>
+</div>
