@@ -1,0 +1,126 @@
+﻿@model PetLand.Models.CartItemViewModel
+@using PetLand.Areas.Admin.Models
+@{
+    ViewBag.Title = "Selected Products";
+    Layout = "~/Views/Shared/_Trangchu.cshtml";
+}
+@{ var khachhang = Session["KhachHang"] as KhachHang; }
+
+<head>
+    <link rel="stylesheet" href="~/assets/css/buy.css">
+</head>
+
+<div class="container">
+    <div class="address">
+        <h1 class="address-name"><i class="fa-solid fa-location-dot"></i> Địa chỉ nhận hàng</h1>
+        <div class="address-info">
+            <div class="c-info">
+                <span class="c-name">  @khachhang.hoten</span>
+                <span class="c-phone">Số điện thoại: @khachhang.sdt</span>
+            </div>
+            <div class="change">
+                <span class="c-address">@khachhang.diachi</span>
+                <a href="#" class="change-address-link">Thay đổi</a>
+            </div>
+        </div>
+    </div>
+    <div class="product">
+        <h1 class="products-name">Sản Phẩm</h1>
+        @foreach (var item in Model.CartItems)
+        {
+            <div class="product-info">
+                <img src="~/assets/img/product.jpg" alt="">
+                <div class="product-details">
+                    <span class="product-name">@item.TenSanPham</span>
+                    <span class="product-type">Phân loại hàng : @item.Tenchitiet</span>
+                    <span class="product-quantity">số Lượng : @item.SoLuong</span>
+                    <span class="product-price">tổng tiền : @item.TongGia</span>
+                </div>
+            </div>
+        }
+    </div>
+    <div class="send">
+        <div class="note">
+            <label for="note-text">Ghi chú: </label>
+            <textarea id="note-text" class="note-content" placeholder="Nhập ghi chú của bạn tại đây..."></textarea>
+        </div>
+        <div class="discounts">
+            <h3 class="discount"><i class="fa-solid fa-ticket"></i> Mã Giảm Giá</h3>
+        </div>
+        <div class="voucher-table" id="voucherTable" style="display: none;">
+            <div class="discount-input">
+                <input type="text" id="discount-code" class="discount-code" placeholder="Nhập mã giảm giá">
+                <button class="apply-discount">Áp dụng</button>
+            </div>
+            <div class="ds-table">
+                <table>
+                    <tr>
+                        <th>Mã</th>
+                        <th>Mô tả</th>
+                        <th>Ngày áp dụng</th>
+                        <th>Hạn hết hạn</th>
+                        <th></th>
+                    </tr>
+                    <tr>
+                        <td>VOUCHER01</td>
+                        <td>Giảm 10% cho đơn hàng trên 500k</td>
+                        <td>12/02/2025</td>
+                        <td>12/02/2025</td>
+                        <td><button class="select-voucher" data-code="VOUCHER01">Chọn</button></td>
+                    </tr>
+                    <tr>
+                        <td>VOUCHER02</td>
+                        <td>Giảm 50k cho đơn hàng trên 300k</td>
+                        <td>12/02/2025</td>
+                        <td>12/02/2025</td>
+                        <td><button class="select-voucher" data-code="VOUCHER02">Chọn</button></td>
+                    </tr>
+                </table>
+            </div>
+        </div>
+
+    </div>
+    <div class="pay">
+        <div class="cart-footer__summary">
+            <div class="price">
+                <span class="cart-footer__total-text">Tổng thanh toán:</span>
+                <span class="cart-footer__total-price">@Model.TongTatCaSanPham đ</span>
+            </div>
+            <button class="cart-footer__checkout-button" onclick="window.location.href='pay.html'">Đặt Hàng</button>
+        </div>
+    </div>
+</div>
+
+<div class="change-address" style="display: none;">
+    <button class="close-btn">&times;</button>
+    <h2>Thay Đổi Địa Chỉ</h2>
+    <form id="address-form">
+        <div class="form-group">
+            <label for="province">Tỉnh/Thành phố:</label>
+            <select id="province" name="province" required>
+                <option value="">Chọn tỉnh/thành phố</option>
+            </select>
+        </div>
+        <div class="form-group">
+            <label for="district">Quận/Huyện:</label>
+            <select id="district" name="district" required>
+                <option value="">Chọn quận/huyện</option>
+            </select>
+        </div>
+        <div class="form-group">
+            <label for="ward">Phường/Xã:</label>
+            <select id="ward" name="ward" required>
+                <option value="">Chọn phường/xã</option>
+            </select>
+        </div>
+        <div class="form-group">
+            <label for="street">Số nhà, tên đường:</label>
+            <input type="text" id="street" name="street" placeholder="Nhập số nhà, tên đường" required>
+        </div>
+        <div id="address-display">
+            <textarea id="full-address" rows="4" readonly style="display: none;"></textarea>
+        </div>
+        <button id="add-address" type="submit">Thêm Địa Chỉ</button>
+    </form>
+</div>
+
