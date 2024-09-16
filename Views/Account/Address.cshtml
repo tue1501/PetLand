@@ -1,0 +1,61 @@
+﻿@model PetLand.Areas.Admin.Models.KhachHang
+
+@{
+    ViewBag.Title = "Address";
+    Layout = "~/Views/Shared/_Trangchu.cshtml";
+}
+<head>
+    <link rel="stylesheet" href="~/assets/css/information.css">
+</head>
+<div class="container container-info">
+    <div class="c-logo">
+        <img src="~/assets/img/Logo.png" alt="Logo">
+        <ul class="category__list">
+            <a href="index.html">
+            <li class="category__item hide-item"><i class="fa-solid fa-house"></i>Trang chủ</li></a>
+            <a href="account-info.html">
+            <li class="category__item"><i class="fa-solid fa-user"></i>Thông tin tài khoản</li></a>
+            <a href="account-discount.html">
+            <li class="category__item"><i class="fa-solid fa-ticket"></i>Mã giảm giá</li></a>
+            <a href="order.html">
+            <li class="category__item hide-item"><i class="fa-solid fa-truck"></i>Đơn hàng của bạn</li></a>
+            <a href="account-login.html" id="logout-link">
+            <li class="category__item"><i class="fa-solid fa-right-from-bracket"></i>Thoát tài khoản</li></a>
+        </ul>
+    </div>
+    <div class="information if-address">
+        <h1>Thêm Địa Chỉ</h1>
+        <form id="address-form" action="@Url.Action("Address","Account")" method="post">
+            <div class="form-group">
+                <label for="province">Tỉnh/Thành phố:</label>
+                <select id="province" name="province" required>
+                    <option value="">Chọn tỉnh/thành phố</option>
+                </select>
+            </div>
+            <div class="form-group">
+                <label for="district">Quận/Huyện:</label>
+                <select id="district" name="district" required>
+                    <option value="">Chọn quận/huyện</option>
+                </select>
+            </div>
+            <div class="form-group">
+                <label for="ward">Phường/Xã:</label>
+                <select id="ward" name="ward" required>
+                    <option value="">Chọn phường/xã</option>
+                </select>
+            </div>
+            <div class="form-group">
+                <label for="street">Số nhà, tên đường:</label>
+                <input type="text" id="street" name="street" placeholder="Nhập số nhà, tên đường" required>
+            </div>
+            <div id="address-display">
+                @Html.ValidationSummary(true, "", new { @class = "text-danger" })
+                @Html.HiddenFor(model => model.idKhachHang)
+                @Html.HiddenFor(model => model.diachi, new { htmlAttributes = new { @class = "form-control", @id = "diachi" } })
+            </div>
+            <button id="add-address" type="submit"> Thêm Địa Chỉ</button>
+        </form>
+    </div>
+</div>
+<script src="~/assets/js/address.js"></script>
+<script src="~/assets/js/information.js"></script>

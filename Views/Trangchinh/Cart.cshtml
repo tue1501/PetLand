@@ -1,0 +1,101 @@
+﻿@model IEnumerable<PetLand.Models.CartItemViewModel>
+@using PetLand.Areas.Admin.Models
+@{
+    ViewBag.Title = "Cart";
+    Layout = "~/Views/Shared/_Trangchu.cshtml";
+}
+@{ var khachhang = Session["KhachHang"] as KhachHang; }
+<head>
+    <link rel="stylesheet" href="~/assets/css/cart.css">
+</head>
+<div class="container">
+    <div class="c-cart">
+        <h1 class="cart-name">Giỏ Hàng</h1>
+        <div id="empty-cart-message" style="display: none;">
+            <p>Giỏ hàng của bạn hiện đang trống.</p>
+        </div>
+        <form method="post" action="@Url.Action("ProcessSelectedItems", "Buy" , new {id = khachhang.idKhachHang})">
+            @foreach (var item in Model)
+            {
+                <div class="cart-item">
+                    <input type="checkbox" class="select-item" name="selectedProductIds" value="@item.SanPhamId" />
+                    <img src="~/assets/img/product.jpg" alt="@item.TenSanPham">
+                    <div class="item-details">
+                        <span class="item-name">@item.TenSanPham</span>
+                        <div class="item-prices">
+                            <span class="price">@item.Gia</span>
+                        </div>
+                    </div>
+                    <div class="quantity-control">
+                        <button type="button" class="quantity-button decrease"
+                                data-idsp="@item.SanPhamId"
+                                data-idkhachhang="@item.KhachHangid">
+                            -
+                        </button>
+
+                        <span class="quantity">@item.SoLuong</span>
+                        <button type="button" class="quantity-button increase"
+                                data-idsp="@item.SanPhamId"
+                                data-idkhachhang="@item.KhachHangid"
+                                data-change="1">
+                            +
+                        </button>
+                    </div>
+                    <a class="link-product" href="@Url.Action("Cart_delete", "Trangchinh", new { id = item.Giohangid })">
+                        <button type="button" class="delete-button">
+                            <i class="fa-regular fa-trash-can"></i>
+                        </button>
+                    </a>
+                </div>
+            }
+            <!-- Add more cart items as needed -->
+            <div class="cart-footer">
+                <div class="cart-footer__actions">
+                    <input type="checkbox" id="select-all-footer" name="select">
+                    <label for="select-all-footer">Chọn Tất Cả</label>
+                    <button type="submit" class="cart-footer__delete">Xóa</button>
+                </div>
+                <div class="cart-footer__summary">
+                    <span class="cart-footer__total-text">Tổng thanh toán:</span>
+                    <span class="total-price"><span class="cart-footer__total-price"></span>đ</span>
+                    <button type="submit" class="cart-footer__checkout-button">Mua Hàng</button>
+                </div>
+            </div>
+        </form>
+    </div>
+</div>
+
+
+@section script {
+    <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+    <script>
+    $(document).ready(function() {
+        $('.quantity-button').click(function() {
+            var button = $(this);
+            var idSanPham = button.data('idsp');
+            var idKhachHang = button.data('idkhachhang');
+            var change = button.hasClass('increase') ? 1 : -1; // Thay đổi số lượng khi bấm nút + hoặc -
+
+            $.ajax({
+                url: '@Url.Action("Cart_bot", "Trangchinh")',
+                type: 'POST',
+                data: {
+                    idsp: idSanPham,
+                    change: change,
+                    idkhachhang: idKhachHang
+                },
+                success: function(response) {
+                    if (response.success) {
+                        location.reload(); // Tải lại trang để cập nhật giỏ hàng
+                    } else {
+                        alert('Cập nhật giỏ hàng không thành công.');
+                    }
+                },
+                error: function() {
+                    alert('Có lỗi xảy ra trong quá trình xử lý.');
+                }
+            });
+        });
+    });
+    </script>
+}

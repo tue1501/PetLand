@@ -1,0 +1,79 @@
+﻿@model PetLand.Areas.Admin.Models.SanPham
+@using PetLand.Areas.Admin.Models
+@{
+    ViewBag.Title = "detail";
+    Layout = "~/Views/Shared/_Trangchu.cshtml";
+}
+@{
+    var khachhang = Session["KhachHang"] as KhachHang;
+    var customerId = khachhang?.idKhachHang;
+}
+<head>
+    <link rel="stylesheet" href="~/assets/css/base.css">
+    <link rel="stylesheet" href="~/assets/css/main.css">
+    <link rel="stylesheet" href="~/assets/css/product-detail.css">
+</head>
+<div class="container">
+    <div class="product-detail__container">
+        <div class="product-detail__image">
+            <img src="~/assets/img/product.jpg" alt="Product Image">
+        </div>
+        <div class="product-detail__info">
+            <h1 class="product-detail__name">@Html.DisplayFor(model => model.tensp)</h1>
+            <p class="product-detail__price">@Html.DisplayFor(model => model.gia)</p>
+            <div class="rating">
+                <div class="product-detail__rating" data-rating="@Model.Danhgias.Average(d => d.diem)">
+                </div>
+                <span>(@Html.DisplayFor(model => model.Danhgias.Count) Đánh giá)</span>
+            </div>
+            <p class="product-detail__origin">
+                Xuất xứ : @Html.DisplayFor(model => model.xuatxu)
+            </p>
+            <p class="product-detail__description">
+                @Html.DisplayFor(model => model.mota)
+            </p>
+            <button type="button" class="product-detail__btn-add"
+                    data-idsanpham="@Model.idSanPham"
+                    data-idkhachhang="@customerId"
+                    data-soluong="1">
+                Thêm vào giỏ hàng
+            </button>
+        </div>
+    </div>
+    @{ Html.RenderAction("detail_danhgia", "Trangchinh"); }
+</div>
+
+@section script {
+    <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+    <script>
+    $(document).ready(function() {
+        $('.product-detail__btn-add').click(function() {
+            var button = $(this);
+            var idSanPham = button.data('idsanpham');
+            var idKhachHang = button.data('idkhachhang');
+            var soluong = button.data('soluong');
+
+            $.ajax({
+                url: '@Url.Action("AddCart", "Trangchinh")',
+                type: 'POST',
+                data: {
+                    idSanPham: idSanPham,
+                    idKhachHang: idKhachHang,
+                    soluong: soluong
+                },
+                success: function(response) {
+                    if (response.success) {
+                        alert('Sản phẩm đã được thêm vào giỏ hàng!');
+                        // Cập nhật giao diện hoặc thực hiện các hành động khác nếu cần
+                    } else {
+                        alert('Có lỗi xảy ra khi thêm sản phẩm vào giỏ hàng.');
+                    }
+                },
+                error: function(xhr, status, error) {
+                    alert('Có lỗi xảy ra. Vui lòng thử lại.');
+                }
+            });
+        });
+    });
+    </script>
+}

@@ -1,0 +1,35 @@
+﻿@model PetLand.Areas.Admin.Models.KhachHang
+
+@{
+    ViewBag.Title = "info";
+    Layout = "~/Views/Shared/_Trangchu.cshtml";
+}
+<head>
+    <link rel="stylesheet" href="~/assets/css/information.css">
+</head>
+<div class="container">
+    <div class="c-logo">
+        <img src="~/assets/img/Logo.png" alt="Logo">
+        <ul class="category__list">
+            <a href="@Url.Action("Info", "Account", new { id = Model.idKhachHang })">
+            <li class="category__item"><i class="fa-solid fa-user"></i>Thông tin tài khoản</li></a>
+            <a href="@Url.Action("Discount", "Account", new { id = Model.idKhachHang })">
+            <li class="category__item"><i class="fa-solid fa-ticket"></i>Mã giảm giá</li></a>
+            <a href="@Url.Action("Logout", "Account")" id="logout-link">
+            <li class="category__item"><i class="fa-solid fa-right-from-bracket"></i>Thoát tài khoản</li></a>
+        </ul>
+    </div>
+    <div class="information">
+        <div class="c-info">
+            <p>Họ và tên: @Html.DisplayFor(model => model.hoten) </p>
+            <p>Số điện thoại: @Html.DisplayFor(model => model.sdt)</p>
+            <p>Email: @Html.DisplayFor(model => model.gmail)</p>
+            <p>Địa chỉ: @Html.DisplayFor(model => model.diachi) <a href=@Url.Action("Address","Account", new { id = Model.idKhachHang })><i class="fas fa-edit"></i></a></p>
+        </div>
+        <div class="btn">
+            <button class="change" type="button" onclick="window.location.href='@Url.Action("Changepass","Account" ,new { id = Model.idKhachHang } )'">Đổi mật khẩu</button>
+            <button class="del" type="button" onclick="window.location.href='@Url.Action("DeleteAccount","Account" ,new { id = Model.idKhachHang } )'">Xóa tài khoản</button>
+        </div>
+    </div>
+</div>
+

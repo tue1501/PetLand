@@ -1,0 +1,7 @@
+﻿@model IEnumerable<PetLand.Areas.Admin.Models.LoaiSanPham>
+
+
+@foreach (var item in Model)
+{
+<li class="category__item"><a href="product-foods.html" class="category__item-link">@Html.DisplayFor(modelItem => item.tenloai)</a></li>
+}
