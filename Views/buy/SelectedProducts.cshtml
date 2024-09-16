@@ -1,11 +1,8 @@
-﻿@model PetLand.Models.CartItemViewModel
-@using PetLand.Areas.Admin.Models
+@model PetLand.Models.CartItemViewModel
 @{
     ViewBag.Title = "Selected Products";
     Layout = "~/Views/Shared/_Trangchu.cshtml";
 }
-@{ var khachhang = Session["KhachHang"] as KhachHang; }
-
 <head>
     <link rel="stylesheet" href="~/assets/css/buy.css">
 </head>
@@ -15,11 +12,11 @@
         <h1 class="address-name"><i class="fa-solid fa-location-dot"></i> Địa chỉ nhận hàng</h1>
         <div class="address-info">
             <div class="c-info">
-                <span class="c-name">  @khachhang.hoten</span>
-                <span class="c-phone">Số điện thoại: @khachhang.sdt</span>
+                <span class="c-name">@Model.KhachHang.hoten</span>
+                <span class="c-phone">Số điện thoại: @Model.KhachHang.sdt</span>
             </div>
             <div class="change">
-                <span class="c-address">@khachhang.diachi</span>
+                <span class="c-address">@Model.KhachHang.diachi</span>
                 <a href="#" class="change-address-link">Thay đổi</a>
             </div>
         </div>
@@ -94,7 +91,6 @@
 <div class="change-address" style="display: none;">
     <button class="close-btn">&times;</button>
     <h2>Thay Đổi Địa Chỉ</h2>
-    <form id="address-form">
         <div class="form-group">
             <label for="province">Tỉnh/Thành phố:</label>
             <select id="province" name="province" required>
@@ -118,9 +114,39 @@
             <input type="text" id="street" name="street" placeholder="Nhập số nhà, tên đường" required>
         </div>
         <div id="address-display">
-            <textarea id="full-address" rows="4" readonly style="display: none;"></textarea>
+            @Html.HiddenFor(model => @Model.KhachHang.idKhachHang, new { @id = "khachhang-id" })
+            @Html.HiddenFor(model => @Model.KhachHang.diachi, new { @id = "diachi" })
         </div>
         <button id="add-address" type="submit">Thêm Địa Chỉ</button>
-    </form>
 </div>
+<!-- JavaScript -->
+<script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
+<script>
+    $(document).ready(function () {
+        $('#add-address').click(function () {
+            var id = $('#khachhang-id').val();
+            var diachi = $('#diachi').val();
 
+            $.ajax({
+                url: '@Url.Action("ChangeAddress", "Buy")',
+                type: 'POST',
+                data: {
+                    id: id,
+                    diachi: diachi
+                },
+                success: function (response) {
+                    if (response.success) {
+                        // Bạn có thể làm gì đó sau khi cập nhật thành công như cập nhật giao diện hoặc chuyển hướng
+                        // Ví dụ:
+                         window.location.reload();
+                    } else {
+                        alert(response.message);
+                    }
+                },
+                error: function () {
+                    alert('Có lỗi xảy ra. Vui lòng thử lại.');
+                }
+            });
+        });
+    });
+</script>
