@@ -1,3 +1,4 @@
+using PetLand.Areas.Admin.Models;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -7,7 +8,7 @@ namespace PetLand.Models
 {
     public class CartItemViewModel
     {
-
+        public KhachHang KhachHang { get; set; }
         public int Giohangid { get; set; }
         public int SanPhamId { get; set; }
         public string TenSanPham { get; set; }
