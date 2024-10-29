@@ -140,7 +140,7 @@
                 {
                     // Thanh toán thành công
                     Session["PaymentInProgress"] = null; // Xóa cờ thanh toán
-                    return RedirectToAction("Order", "Order", new { id = id }); // Điều hướng đến trang đơn hàng thành công
+                    return RedirectToAction("Orderupdate", "Order", new { id = id }); // Điều hướng đến trang đơn hàng thành công
                 }
                 else
                 {
@@ -149,7 +149,7 @@
                     if (donHang != null)
                     {
                         // Cập nhật trạng thái đơn hàng thành đã hủy
-                        donHang.trangthai = 2; // Giả sử trạng thái 2 là "Đã hủy"
+                        donHang.trangthai = 6; // Giả sử trạng thái 2 là "Đã hủy"
 
                         // Cập nhật trạng thái giảm giá nếu có
                         if (donHang.idGiamGia.HasValue)
@@ -173,7 +173,6 @@
                         }
 
                         // Xóa chi tiết đơn hàng
-                        db.ChiTietDonHangs.RemoveRange(chiTietDonHangs);
                         db.SaveChanges(); // Lưu thay đổi vào cơ sở dữ liệu
                     }
 
